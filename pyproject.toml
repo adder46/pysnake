@@ -1,0 +1,34 @@
+[tool.poetry]
+name = "snake"
+version = "0.1.0"
+description = "The classic snake game implemented in Python using curses"
+authors = ["adder46 <dedmauz69@gmail.com>"]
+license = "MIT"
+readme = "README.md"
+
+[tool.poetry.scripts]
+snake = 'snake.application:sync_main'
+
+[tool.poetry.dependencies]
+python = ">=3.6,<4"
+trio = "^0.17.0"
+
+[tool.poetry.dev-dependencies]
+pytest = "^6.1.2"
+mypy = "^0.790"
+pytest-cov = "^2.10.1"
+pytest-trio = "^0.7.0"
+tox = "^3.20.1"
+tox-ini-fmt = "^0.5.0"
+black = "^20.8b1"
+
+[tool.pytest.ini_options]
+addopts = "--cov=snake"
+testpaths = [
+    "tests",
+]
+trio_mode = true
+
+[build-system]
+requires = ["poetry-core>=1.0.0"]
+build-backend = "poetry.core.masonry.api"

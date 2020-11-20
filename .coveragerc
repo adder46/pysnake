@@ -1,0 +1,4 @@
+[run]
+omit =
+    */snake/__main__.py
+    */snake/__init__.py
