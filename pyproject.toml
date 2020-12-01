@@ -23,7 +23,7 @@ tox-ini-fmt = "^0.5.0"
 black = "^20.8b1"
 
 [tool.pytest.ini_options]
-addopts = "--cov=snake"
+addopts = "--cov=snake --cov-report=xml"
 testpaths = [
     "tests",
 ]
