@@ -1,6 +1,6 @@
 # pysnake
 
-![build status](https://github.com/adder46/pysnake/workflows/pysnake/badge.svg) [![codecov](https://codecov.io/gh/adder46/pysnake/branch/master/graph/badge.svg?token=TLGV3HQGK0)](https://codecov.io/gh/adder46/pysnake)
+![build status](https://github.com/adder46/pysnake/workflows/pysnake/badge.svg) [![codecov](https://codecov.io/gh/adder46/pysnake/branch/master/graph/badge.svg?token=TLGV3HQGK0)](https://codecov.io/gh/adder46/pysnake) ![python-versions](.github/badges/python-versions.svg) ![GitHub](https://img.shields.io/github/license/adder46/pysnake)
 
 Classic snake game implementation written in Python using curses.
 
