@@ -10,7 +10,7 @@ readme = "README.md"
 snake = 'snake.application:sync_main'
 
 [tool.poetry.dependencies]
-python = ">=3.6,<4"
+python = "^3.6"
 trio = "^0.17.0"
 
 [tool.poetry.dev-dependencies]

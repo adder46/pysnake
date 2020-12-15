@@ -40,4 +40,4 @@ coverage.xml
 .hypothesis/
 .pytest_cache/
 env/
-poetry.lock
+
