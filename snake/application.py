@@ -6,7 +6,12 @@ import trio
 
 from snake import Window
 from snake.core import Game, CollisionError
-from snake.user_interface import UserInterface, PLAYGROUND_HEIGHT, PLAYGROUND_WIDTH
+from snake.user_interface import (
+    PLAYGROUND_HEIGHT,
+    PLAYGROUND_WIDTH,
+    UserInterface,
+    create_screen,
+)
 
 
 DIRECTIONS = {
@@ -15,18 +20,6 @@ DIRECTIONS = {
     curses.KEY_LEFT: "left",
     curses.KEY_RIGHT: "right",
 }
-
-
-def create_screen(stdscr: Window) -> Optional[Window]:
-    if UserInterface.ensure_terminal_size():
-        inner_screen = stdscr.subwin(
-            PLAYGROUND_HEIGHT,
-            PLAYGROUND_WIDTH,
-            (curses.LINES - PLAYGROUND_HEIGHT) // 2,
-            (curses.COLS - PLAYGROUND_WIDTH) // 2,
-        )
-        return inner_screen
-    return None
 
 
 def sync_main() -> None:

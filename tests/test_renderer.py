@@ -18,8 +18,8 @@ def test_render_food(fake_curses, fake_stdscr):
     renderer = user_interface.Renderer(fake_stdscr)
     renderer.render_food(game.food)
     assert (
-        game.food.y_coord,
-        game.food.x_coord * 2,
+        game.food.y,
+        game.food.x * 2,
         "  ",
         None,
     ) in fake_stdscr.addstred

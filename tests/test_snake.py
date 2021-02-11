@@ -37,8 +37,8 @@ def test_eat_food(fake_stdscr):
 
 def test_is_touching_food(fake_stdscr):
     game = core.Game(fake_stdscr)
-    game.food.x_coord = game.snake.body[-1][1] + 1
-    game.food.y_coord = game.snake.body[-1][0]
+    game.food.x = game.snake.body[-1][1] + 1
+    game.food.y = game.snake.body[-1][0]
     assert not game.snake.is_touching_food(game.food)
     game.snake.move()
     assert game.snake.is_touching_food(game.food)

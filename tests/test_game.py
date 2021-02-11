@@ -62,8 +62,8 @@ def test_handle_food_counter(before, after, fake_stdscr):
 
 def test_handle_food_updating_score(fake_stdscr):
     game = core.Game(fake_stdscr)
-    game.food.y_coord = game.snake.body[-1][0]
-    game.food.x_coord = game.snake.body[-1][1] + 1
+    game.food.y = game.snake.body[-1][0]
+    game.food.x = game.snake.body[-1][1] + 1
     game.snake.move()
     game.handle_food()
     assert game.score == 1 and game.food_counter == 0

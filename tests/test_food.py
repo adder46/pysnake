@@ -11,6 +11,6 @@ def test_food_does_not_overlap_Snake(fake_stdscr):
 def test_food_overlaps_Snake(fake_stdscr):
     snake = core.Snake(fake_stdscr)
     food = core.Food(fake_stdscr, snake.body)
-    food.y_coord = snake.body[3][0]
-    food.x_coord = snake.body[3][1]
+    food.y = snake.body[3][0]
+    food.x = snake.body[3][1]
     assert food.is_overlapping_snake(snake.body)

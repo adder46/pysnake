@@ -10,10 +10,34 @@ from snake.user_interface import PLAYGROUND_HEIGHT, PLAYGROUND_WIDTH
 
 
 DIRECTIONS: Dict[str, Any] = {
-    "up": {"coords": {"x": 0, "y": -1}, "forbidden": "down"},
-    "down": {"coords": {"x": 0, "y": 1}, "forbidden": "up"},
-    "left": {"coords": {"x": -1, "y": 0}, "forbidden": "right"},
-    "right": {"coords": {"x": 1, "y": 0}, "forbidden": "left"},
+    "up": {
+        "coords": {
+            "x": 0,
+            "y": -1
+        },
+        "forbidden": "down"
+    },
+    "down": {
+        "coords": {
+            "x": 0,
+            "y": 1
+        },
+        "forbidden": "up"
+    },
+    "left": {
+        "coords": {
+            "x": -1,
+            "y": 0
+        },
+        "forbidden": "right"
+        },
+    "right": {
+        "coords": {
+            "x": 1,
+            "y": 0
+        },
+        "forbidden": "left"
+    },
 }
 
 
@@ -109,8 +133,7 @@ class Snake:
         assert current_max_length is not None
         self.body = collections.deque(self.body, maxlen=current_max_length + 1)
         self.body.insert(
-            0,
-            [
+            0, [
                 self.body[0][0] + DIRECTIONS[self.direction]["coords"]["y"],
                 self.body[0][1] + DIRECTIONS[self.direction]["coords"]["x"],
             ],
@@ -120,19 +143,17 @@ class Snake:
         """
         Returns true if snake is about to collide with itself or the walls.
         """
-        return any(
-            [
-                next_step in self.body,
-                self.body[-1][0] in {0, PLAYGROUND_HEIGHT - 1},
-                self.body[-1][1] in {0, PLAYGROUND_WIDTH // 2 - 1},
-            ]
-        )
+        return any([
+            next_step in self.body,
+            self.body[-1][0] in {0, PLAYGROUND_HEIGHT - 1},
+            self.body[-1][1] in {0, PLAYGROUND_WIDTH // 2 - 1},
+        ])
 
     def is_touching_food(self, food) -> bool:
         """
         Returns true if snake's head touches food in any way.
         """
-        return self.body[-1] == [food.y_coord, food.x_coord]
+        return self.body[-1] == [food.y, food.x]
 
     def get_next_step(self) -> List[int]:
         """
@@ -148,8 +169,8 @@ class Food:
     def __init__(self, screen: Window, body: Deque[List[int]]):
         self.screen = screen
         while True:
-            self.y_coord = random.randint(1, PLAYGROUND_HEIGHT - 2)
-            self.x_coord = random.randint(1, PLAYGROUND_WIDTH // 2 - 2)
+            self.y = random.randint(1, PLAYGROUND_HEIGHT - 2)
+            self.x = random.randint(1, PLAYGROUND_WIDTH // 2 - 2)
             if not self.is_overlapping_snake(body):
                 break
 
@@ -157,7 +178,7 @@ class Food:
         """
         Returns true if food is about to be drawn on top of snake.
         """
-        return [self.y_coord, self.x_coord] in body
+        return [self.y, self.x] in body
 
 
 class CollisionError(Exception):
