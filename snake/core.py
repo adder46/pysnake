@@ -167,7 +167,7 @@ class Snake:
 
     def get_next_step(self) -> Coord:
         """
-        Gets next step based on current direction in [Y, X] form.
+        Gets next step based on current direction.
         """
         return self.body[-1] + DIRECTIONS[self.direction]["coords"]
 
