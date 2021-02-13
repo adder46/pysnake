@@ -1,5 +1,6 @@
 import collections
 import curses
+import enum
 import random
 from typing import Any, Dict, Deque, List, Optional
 
@@ -19,22 +20,29 @@ class Coord:
         return Coord(self.y + other.y, self.x + other.x)
 
 
-DIRECTIONS: Dict[str, Any] = {
-    "up": {
+class Direction(enum.Enum):
+    UP = "up"
+    DOWN = "down"
+    LEFT = "left"
+    RIGHT = "right"
+
+
+DIRECTIONS: Dict[Direction, Any] = {
+    Direction.UP: {
         "coords": Coord(x=0, y=-1),
-        "forbidden": "down"
+        "forbidden": Direction.DOWN
     },
-    "down": {
+    Direction.DOWN: {
         "coords": Coord(x=0, y=1),
-        "forbidden": "up"
+        "forbidden": Direction.UP
     },
-    "left": {
+    Direction.LEFT: {
         "coords": Coord(x=-1, y=0),
-        "forbidden": "right"
+        "forbidden": Direction.RIGHT
         },
-    "right": {
+    Direction.RIGHT: {
         "coords": Coord(x=1, y=0),
-        "forbidden": "left"
+        "forbidden": Direction.LEFT
     },
 }
 
@@ -69,7 +77,7 @@ class Game:
             self.score += 1
             self.make_food()
 
-    def set_direction_if_possible(self, direction: str) -> None:
+    def set_direction_if_possible(self, direction: Direction) -> None:
         """
         Sets snake direction while making sure it does not go the wrong way.
         """
@@ -104,15 +112,14 @@ class Game:
 class Snake:
     def __init__(self, screen: Window):
         self.screen = screen
-        self.direction = "right"
+        self.direction = Direction.RIGHT
         self.body = self.init_body()
 
     def init_body(self) -> Deque[Coord]:  # pylint: disable=no-self-use
+        half_width = PLAYGROUND_WIDTH // 4
+        half_height = PLAYGROUND_HEIGHT // 2  
         return collections.deque(
-            [
-                Coord(y=PLAYGROUND_HEIGHT // 2, x=PLAYGROUND_WIDTH // 4 + i)
-                for i in range(-3, 4)
-            ],
+            [Coord(y=half_height, x=half_width + i) for i in range(-3, 4)],
             maxlen=7,
         )
 

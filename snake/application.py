@@ -5,7 +5,11 @@ from typing import Optional
 import trio
 
 from snake import Window
-from snake.core import Game, CollisionError
+from snake.core import (
+    CollisionError,
+    Direction,
+    Game,
+)
 from snake.user_interface import (
     PLAYGROUND_HEIGHT,
     PLAYGROUND_WIDTH,
@@ -15,10 +19,10 @@ from snake.user_interface import (
 
 
 DIRECTIONS = {
-    curses.KEY_UP: "up",
-    curses.KEY_DOWN: "down",
-    curses.KEY_LEFT: "left",
-    curses.KEY_RIGHT: "right",
+    curses.KEY_UP: Direction.UP,
+    curses.KEY_DOWN: Direction.DOWN,
+    curses.KEY_LEFT: Direction.LEFT,
+    curses.KEY_RIGHT: Direction.RIGHT,
 }
 
 

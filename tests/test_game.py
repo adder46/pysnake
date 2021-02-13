@@ -20,7 +20,12 @@ def test_restart(fake_stdscr):
 
 @pytest.mark.parametrize(
     "current, wanted",
-    [["right", "left"], ["left", "right"], ["up", "down"], ["down", "up"]],
+    [
+        [core.Direction.RIGHT, core.Direction.LEFT],
+        [core.Direction.LEFT, core.Direction.RIGHT],
+        [core.Direction.UP, core.Direction.DOWN],
+        [core.Direction.DOWN, core.Direction.UP]
+    ],
 )
 def test_set_direction_if_possible(current, wanted, fake_stdscr):
     game = core.Game(fake_stdscr)
@@ -31,10 +36,10 @@ def test_set_direction_if_possible(current, wanted, fake_stdscr):
 @pytest.mark.parametrize(
     "current, valid",
     [
-        ["up", ["left", "right"]],
-        ["down", ["left", "right"]],
-        ["left", ["up", "down"]],
-        ["right", ["up", "down"]],
+        [core.Direction.UP, [core.Direction.LEFT, core.Direction.RIGHT]],
+        [core.Direction.DOWN, [core.Direction.LEFT, core.Direction.RIGHT]],
+        [core.Direction.LEFT, [core.Direction.UP, core.Direction.DOWN]],
+        [core.Direction.RIGHT, [core.Direction.UP, core.Direction.DOWN]],
     ],
 )
 def test_set_direction_if_possible_valid(current, valid, fake_stdscr):
