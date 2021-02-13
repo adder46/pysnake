@@ -56,7 +56,7 @@ class Game:
     def __init__(self, screen: Window):
         self.screen = screen
         self.snake = Snake(screen)
-        self.food = Food(screen, self.snake.body)
+        self.food = Food(screen, self.snake)
         self.food_counter: int = 0
         self.score: int = 0
 
@@ -65,7 +65,7 @@ class Game:
         Resets the counter to zero and makes new food.
         """
         self.food_counter = 0
-        self.food = Food(self.screen, self.snake.body)
+        self.food = Food(self.screen, self.snake)
 
     def handle_food(self) -> None:
         """
@@ -95,7 +95,7 @@ class Game:
         Restarts the game by putting all vital game parameters to initial state.
         """
         self.snake = Snake(self.screen)
-        self.food = Food(self.screen, self.snake.body)
+        self.food = Food(self.screen, self.snake)
         self.food_counter = 0
         self.score = 0
 
@@ -173,20 +173,14 @@ class Snake:
 
 
 class Food:
-    def __init__(self, screen: Window, body: Deque[Coord]):
+    def __init__(self, screen: Window, snake: Snake):
         self.screen = screen
         while True:
             y = random.randint(1, PLAYGROUND_HEIGHT - 2)
             x = random.randint(1, PLAYGROUND_WIDTH // 2 - 2)
             self.coord = Coord(y, x)
-            if not self.is_overlapping_snake(body):
+            if not snake.is_touching_food(self):
                 break
-
-    def is_overlapping_snake(self, body: Deque[Coord]) -> bool:
-        """
-        Returns true if food is about to be drawn on top of snake.
-        """
-        return self.coord in body
 
 
 class CollisionError(Exception):
