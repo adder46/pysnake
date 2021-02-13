@@ -85,13 +85,13 @@ class Renderer:
         Draws the body, piece by piece, colored white.
         """
         for piece in snake.body:
-            self.screen.addstr(piece[0], piece[1] * 2, "  ", curses.color_pair(1))
+            self.screen.addstr(piece.y, piece.x * 2, "  ", curses.color_pair(1))
 
     def render_food(self, food: Food) -> None:
         """
         Draws the food at [Y, X] coords, colored red.
         """
-        self.screen.addstr(food.y, food.x * 2, "  ", curses.color_pair(2))
+        self.screen.addstr(food.coord.y, food.coord.x * 2, "  ", curses.color_pair(2))
 
 
 def create_screen(stdscr: Window) -> Optional[Window]:

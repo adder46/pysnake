@@ -3,39 +3,37 @@ import curses
 import random
 from typing import Any, Dict, Deque, List, Optional
 
+import attr
 import trio
 
 from snake import Window
 from snake.user_interface import PLAYGROUND_HEIGHT, PLAYGROUND_WIDTH
 
 
+@attr.s
+class Coord:
+    y: int = attr.ib()
+    x: int = attr.ib()
+
+    def __add__(self, other):
+        return Coord(self.y + other.y, self.x + other.x)
+
+
 DIRECTIONS: Dict[str, Any] = {
     "up": {
-        "coords": {
-            "x": 0,
-            "y": -1
-        },
+        "coords": Coord(x=0, y=-1),
         "forbidden": "down"
     },
     "down": {
-        "coords": {
-            "x": 0,
-            "y": 1
-        },
+        "coords": Coord(x=0, y=1),
         "forbidden": "up"
     },
     "left": {
-        "coords": {
-            "x": -1,
-            "y": 0
-        },
+        "coords": Coord(x=-1, y=0),
         "forbidden": "right"
         },
     "right": {
-        "coords": {
-            "x": 1,
-            "y": 0
-        },
+        "coords": Coord(x=1, y=0),
         "forbidden": "left"
     },
 }
@@ -109,9 +107,12 @@ class Snake:
         self.direction = "right"
         self.body = self.init_body()
 
-    def init_body(self) -> Deque[List[int]]:  # pylint: disable=no-self-use
+    def init_body(self) -> Deque[Coord]:  # pylint: disable=no-self-use
         return collections.deque(
-            [[PLAYGROUND_HEIGHT // 2, PLAYGROUND_WIDTH // 4 + i] for i in range(-3, 4)],
+            [
+                Coord(y=PLAYGROUND_HEIGHT // 2, x=PLAYGROUND_WIDTH // 4 + i)
+                for i in range(-3, 4)
+            ],
             maxlen=7,
         )
 
@@ -133,52 +134,47 @@ class Snake:
         assert current_max_length is not None
         self.body = collections.deque(self.body, maxlen=current_max_length + 1)
         self.body.insert(
-            0, [
-                self.body[0][0] + DIRECTIONS[self.direction]["coords"]["y"],
-                self.body[0][1] + DIRECTIONS[self.direction]["coords"]["x"],
-            ],
+            0, self.body[0] + DIRECTIONS[self.direction]["coords"]
         )
 
-    def is_about_to_collide(self, next_step: List[int]) -> bool:
+    def is_about_to_collide(self, next_step: Coord) -> bool:
         """
         Returns true if snake is about to collide with itself or the walls.
         """
         return any([
             next_step in self.body,
-            self.body[-1][0] in {0, PLAYGROUND_HEIGHT - 1},
-            self.body[-1][1] in {0, PLAYGROUND_WIDTH // 2 - 1},
+            self.body[-1].y in {0, PLAYGROUND_HEIGHT - 1},
+            self.body[-1].x in {0, PLAYGROUND_WIDTH // 2 - 1},
         ])
 
     def is_touching_food(self, food) -> bool:
         """
         Returns true if snake's head touches food in any way.
         """
-        return self.body[-1] == [food.y, food.x]
+        return self.body[-1] == food.coord
 
-    def get_next_step(self) -> List[int]:
+    def get_next_step(self) -> Coord:
         """
         Gets next step based on current direction in [Y, X] form.
         """
-        return [
-            self.body[-1][0] + DIRECTIONS[self.direction]["coords"]["y"],
-            self.body[-1][1] + DIRECTIONS[self.direction]["coords"]["x"],
-        ]
+        return self.body[-1] + DIRECTIONS[self.direction]["coords"]
 
 
 class Food:
-    def __init__(self, screen: Window, body: Deque[List[int]]):
+    def __init__(self, screen: Window, body: Deque[Coord]):
         self.screen = screen
         while True:
-            self.y = random.randint(1, PLAYGROUND_HEIGHT - 2)
-            self.x = random.randint(1, PLAYGROUND_WIDTH // 2 - 2)
+            y = random.randint(1, PLAYGROUND_HEIGHT - 2)
+            x = random.randint(1, PLAYGROUND_WIDTH // 2 - 2)
+            self.coord = Coord(y, x)
             if not self.is_overlapping_snake(body):
                 break
 
-    def is_overlapping_snake(self, body: Deque[List[int]]) -> bool:
+    def is_overlapping_snake(self, body: Deque[Coord]) -> bool:
         """
         Returns true if food is about to be drawn on top of snake.
         """
-        return [self.y, self.x] in body
+        return self.coord in body
 
 
 class CollisionError(Exception):

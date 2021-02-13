@@ -24,8 +24,8 @@ def test_move(current, potential, fake_stdscr):
         before = game.snake.body.copy()
         game.set_direction_if_possible(direction)
         game.snake.move()
-        assert game.snake.body[-1][0] == before[-1][0] + y
-        assert game.snake.body[-1][1] == before[-1][1] + x
+        assert game.snake.body[-1].y == before[-1].y + y
+        assert game.snake.body[-1].x == before[-1].x + x
 
 
 def test_eat_food(fake_stdscr):
@@ -37,8 +37,8 @@ def test_eat_food(fake_stdscr):
 
 def test_is_touching_food(fake_stdscr):
     game = core.Game(fake_stdscr)
-    game.food.x = game.snake.body[-1][1] + 1
-    game.food.y = game.snake.body[-1][0]
+    game.food.coord.y = game.snake.body[-1].y
+    game.food.coord.x = game.snake.body[-1].x + 1
     assert not game.snake.is_touching_food(game.food)
     game.snake.move()
     assert game.snake.is_touching_food(game.food)
@@ -47,10 +47,10 @@ def test_is_touching_food(fake_stdscr):
 @pytest.mark.parametrize(
     "direction, coords",
     [
-        ["up", [11, 23]],
-        ["down", [13, 23]],
-        ["left", [12, 24]],
-        ["right", [12, 24]],
+        ["up", core.Coord(y=11, x=23)],
+        ["down", core.Coord(y=13, x=23)],
+        ["left", core.Coord(y=12, x=24)],
+        ["right", core.Coord(y=12, x=24)],
     ],
 )
 def test_get_next_step(direction, coords, fake_stdscr):
