@@ -6,7 +6,7 @@ import trio
 
 from snake import Window
 
-if TYPE_CHECKING:
+if TYPE_CHECKING:  # pragma: no cover
     from snake.core import Food, Game, Snake  # pylint: disable=cyclic-import
 else:
     Food = Game = Snake = Any
