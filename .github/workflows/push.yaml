@@ -1,4 +1,4 @@
-name: pysnake
+name: build
 
 on: [push]
 
