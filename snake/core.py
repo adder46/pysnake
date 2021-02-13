@@ -122,7 +122,7 @@ class Snake:
 
     def init_body(self) -> Deque[Coord]:  # pylint: disable=no-self-use
         half_width = PLAYGROUND_WIDTH // 4
-        half_height = PLAYGROUND_HEIGHT // 2  
+        half_height = PLAYGROUND_HEIGHT // 2
         return collections.deque(
             [Coord(y=half_height, x=half_width + i) for i in range(-3, 4)],
             maxlen=7,
