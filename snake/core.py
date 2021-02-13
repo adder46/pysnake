@@ -2,7 +2,12 @@ import collections
 import curses
 import enum
 import random
-from typing import Any, Dict, Deque, List, Optional
+from typing import (
+    Any,
+    Dict,
+    Deque,
+    Optional
+)
 
 import attr
 import trio
