@@ -25,27 +25,25 @@ def test_display_score(fake_curses, fake_stdscr):
     ) in fake_stdscr.addstred
 
 
-async def test_display_game_over_screen_quit(monkeypatch, fake_curses, fake_stdscr):
+def test_game_over_screen_quit(monkeypatch, fake_curses, fake_stdscr):
     monkeypatch.setattr(fake_stdscr, "getch", lambda: 113)
     ui = user_interface.UserInterface(fake_stdscr)
     game = core.Game(fake_stdscr)
     with pytest.raises(SystemExit):
-        await ui.display_game_over_screen(game)
+        ui.game_over_screen(game)
 
 
-async def test_display_game_over_screen_restart(monkeypatch, fake_curses, fake_stdscr):
+def test_game_over_screen_restart(monkeypatch, fake_curses, fake_stdscr):
     ui = user_interface.UserInterface(fake_stdscr)
     monkeypatch.setattr(fake_stdscr, "getch", lambda: 114)
     game = core.Game(fake_stdscr)
     game.score = 100
-    await ui.display_game_over_screen(game)
+    ui.game_over_screen(game)
     assert game.score == 0 and game.food_counter == 0 and len(game.snake.body) == 7
 
 
-async def test_display_game_over_screen_exception(
-    monkeypatch, fake_curses, fake_stdscr
-):
+def test_game_over_screen_exception(monkeypatch, fake_curses, fake_stdscr):
     ui = user_interface.UserInterface(fake_stdscr)
     monkeypatch.setattr(fake_stdscr, "getch", fake_getch_game_over)
     game = core.Game(fake_stdscr)
-    await ui.display_game_over_screen(game)
+    ui.game_over_screen(game)

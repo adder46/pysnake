@@ -2,6 +2,7 @@ import collections
 import curses
 import enum
 import random
+import time
 from typing import (
     Any,
     Dict,
@@ -10,7 +11,6 @@ from typing import (
 )
 
 import attr
-import trio
 
 from snake import Window
 from snake.user_interface import PLAYGROUND_HEIGHT, PLAYGROUND_WIDTH
@@ -82,7 +82,7 @@ class Game:
             self.score += 1
             self.make_food()
 
-    def set_direction_if_possible(self, direction: Direction) -> None:
+    def set_direction(self, direction: Direction) -> None:
         """
         Sets snake direction while making sure it does not go the wrong way.
         """
@@ -99,7 +99,7 @@ class Game:
         self.food_counter = 0
         self.score = 0
 
-    async def pause(self) -> None:
+    def pause(self) -> None:
         """
         Pauses the gameplay and waits for user input. If the input is key "p",
         it quits waiting and goes back to main game loop.
@@ -108,7 +108,7 @@ class Game:
             try:
                 user_input = self.screen.getch()
             except curses.error:
-                await trio.sleep(0.1)
+                time.sleep(0.1)
                 continue
             if ord("p") == user_input:
                 break

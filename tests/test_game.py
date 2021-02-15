@@ -4,11 +4,11 @@ from tests.fixtures import fake_curses, fake_stdscr
 from tests.util import fake_getch_pause
 
 
-async def test_pause(monkeypatch, fake_curses, fake_stdscr):
+def test_pause(monkeypatch, fake_curses, fake_stdscr):
     monkeypatch.setattr(fake_stdscr, "getch", fake_getch_pause)
     game = core.Game(fake_stdscr)
     snake_before = game.snake.body
-    await game.pause()
+    game.pause()
     assert game.snake.body == snake_before
 
 
@@ -27,10 +27,10 @@ def test_restart(fake_stdscr):
         [core.Direction.DOWN, core.Direction.UP]
     ],
 )
-def test_set_direction_if_possible(current, wanted, fake_stdscr):
+def test_set_direction(current, wanted, fake_stdscr):
     game = core.Game(fake_stdscr)
     game.snake.direction = current
-    assert game.set_direction_if_possible(wanted) is None
+    assert game.set_direction(wanted) is None
 
 
 @pytest.mark.parametrize(
@@ -42,11 +42,11 @@ def test_set_direction_if_possible(current, wanted, fake_stdscr):
         [core.Direction.RIGHT, [core.Direction.UP, core.Direction.DOWN]],
     ],
 )
-def test_set_direction_if_possible_valid(current, valid, fake_stdscr):
+def test_set_direction_valid(current, valid, fake_stdscr):
     game = core.Game(fake_stdscr)
     for direction in valid:
         game.snake.direction = current
-        game.set_direction_if_possible(direction)
+        game.set_direction(direction)
         assert game.snake.direction == direction
 
 

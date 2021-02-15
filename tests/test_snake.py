@@ -35,14 +35,14 @@ from tests.fixtures import fake_stdscr
 def test_move(current, potential, fake_stdscr):
     game = core.Game(fake_stdscr)
     if current == core.Direction.LEFT:
-        game.set_direction_if_possible(core.Direction.UP)
+        game.set_direction(core.Direction.UP)
         for _ in range(5):
             game.snake.move()
     for direction, next_step in potential:
         game.snake.direction = current
         game.snake.move()
         before = game.snake.body.copy()
-        game.set_direction_if_possible(direction)
+        game.set_direction(direction)
         game.snake.move()
         assert game.snake.body[-1] == before[-1] + next_step
 
@@ -74,7 +74,7 @@ def test_is_touching_food(fake_stdscr):
 )
 def test_get_next_step(direction, coords, fake_stdscr):
     game = core.Game(fake_stdscr)
-    game.set_direction_if_possible(direction)
+    game.set_direction(direction)
     assert game.snake.get_next_step() == coords
 
 
@@ -86,7 +86,7 @@ def test_collision(fake_stdscr):
         core.Direction.LEFT,
         core.Direction.DOWN,
     ):
-        game.set_direction_if_possible(direction)
+        game.set_direction(direction)
         if direction == core.Direction.DOWN:
             with pytest.raises(core.CollisionError):
                 game.snake.move()

@@ -1,8 +1,7 @@
 import curses
 import sys
+import time
 from typing import TYPE_CHECKING, Any, Optional
-
-import trio
 
 from snake import Window
 
@@ -39,21 +38,17 @@ class UserInterface:
         curses.init_pair(1, curses.COLOR_WHITE, curses.COLOR_WHITE)
         curses.init_pair(2, curses.COLOR_RED, curses.COLOR_RED)
 
-    async def display_game_over_screen(self, game: Game) -> None:
+    def game_over_screen(self, game: Game) -> None:
         """
         Displays game over screen and waits for user input.
         If the input are keys "q" or "r", it quits or restarts the game, respectively.
         """
+        half_width = PLAYGROUND_WIDTH // 2
+        half_height = PLAYGROUND_HEIGHT // 2
         self.screen.erase()
-        self.screen.addstr(
-            PLAYGROUND_HEIGHT // 2 - 1, PLAYGROUND_WIDTH // 2 - 4, "GAME OVER"
-        )
-        self.screen.addstr(
-            PLAYGROUND_HEIGHT // 2, PLAYGROUND_WIDTH // 2 - 4, f"SCORE: {game.score}"
-        )
-        self.screen.addstr(
-            PLAYGROUND_HEIGHT // 2 + 2, PLAYGROUND_WIDTH // 2 - 7, "[r]estart [q]uit"
-        )
+        self.screen.addstr(half_height - 1, half_width - 4, "GAME OVER")
+        self.screen.addstr(half_height, half_width - 4, f"SCORE: {game.score}")
+        self.screen.addstr(half_height + 2, half_width - 7, "[r]estart [q]uit")
 
         self.screen.refresh()
 
@@ -61,7 +56,7 @@ class UserInterface:
             try:
                 user_input = self.screen.getch()
             except curses.error:
-                await trio.sleep(0.1)
+                time.sleep(0.1)
                 continue
             if ord("q") == user_input:
                 sys.exit()

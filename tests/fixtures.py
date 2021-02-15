@@ -69,6 +69,9 @@ class FakeStdscr:
     def nodelay(self, *args):
         pass
 
+    def keypad(self, *args):
+        pass
+
 
 @pytest.fixture
 def fake_curses(monkeypatch):

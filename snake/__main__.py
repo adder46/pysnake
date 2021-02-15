@@ -1,3 +1,4 @@
-from snake.application import sync_main
+import curses
+from snake.application import main
 
-sync_main()
+curses.wrapper(main)

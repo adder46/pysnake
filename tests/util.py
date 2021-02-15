@@ -1,4 +1,4 @@
-import trio
+import time
 from snake import core
 from tests.fixtures import FakeCurses
 
@@ -50,8 +50,8 @@ def fake_getch_pause():
         return ord("p")
 
 
-async def fake_pause(*args):
-    await trio.sleep(0.1)
+def fake_pause(*args):
+    time.sleep(0.1)
 
 
 getch_results_game_over = iter(["raise", "r"])

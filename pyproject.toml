@@ -11,14 +11,12 @@ snake = 'snake.application:sync_main'
 
 [tool.poetry.dependencies]
 python = "^3.6"
-trio = "^0.17.0"
 attrs = "^20.3.0"
 
 [tool.poetry.dev-dependencies]
 pytest = "^6.1.2"
 mypy = "^0.790"
 pytest-cov = "^2.10.1"
-pytest-trio = "^0.7.0"
 tox = "^3.20.1"
 tox-ini-fmt = "^0.5.0"
 pylint = "^2.6.0"
@@ -28,7 +26,6 @@ addopts = "--cov=snake --cov-report=xml"
 testpaths = [
     "tests",
 ]
-trio_mode = true
 
 [build-system]
 requires = ["poetry-core>=1.0.0"]

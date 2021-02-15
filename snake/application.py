@@ -1,8 +1,5 @@
 import curses
 import sys
-from typing import Optional
-
-import trio
 
 from snake import Window
 from snake.core import (
@@ -26,11 +23,7 @@ DIRECTIONS = {
 }
 
 
-def sync_main() -> None:
-    curses.wrapper(lambda stdscr: trio.run(main, stdscr))  # pragma: no cover
-
-
-async def main(stdscr: Window) -> None:
+def main(stdscr: Window) -> None:
     stdscr.nodelay(True)
     curses.curs_set(False)
 
@@ -38,6 +31,7 @@ async def main(stdscr: Window) -> None:
     assert inner_screen is not None
 
     stdscr.timeout(100)
+    stdscr.keypad(True)
 
     user_interface = UserInterface(inner_screen)
     game = Game(inner_screen)
@@ -58,7 +52,7 @@ async def main(stdscr: Window) -> None:
         try:
             game.snake.move()
         except CollisionError:
-            await user_interface.display_game_over_screen(game)
+            user_interface.game_over_screen(game)
 
         try:
             user_input = stdscr.getch()
@@ -68,10 +62,10 @@ async def main(stdscr: Window) -> None:
             sys.exit()
 
         if user_input in DIRECTIONS:
-            game.set_direction_if_possible(DIRECTIONS[user_input])
+            game.set_direction(DIRECTIONS[user_input])
 
         if user_input == ord("p"):
-            await game.pause()
+            game.pause()
 
         if user_input == ord("q"):
             sys.exit()
