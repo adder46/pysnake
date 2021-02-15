@@ -34,19 +34,19 @@ class Direction(enum.Enum):
 
 DIRECTIONS: Dict[Direction, Any] = {
     Direction.UP: {
-        "coords": Coord(x=0, y=-1),
+        "coords": Coord(-1, 0),
         "forbidden": Direction.DOWN
     },
     Direction.DOWN: {
-        "coords": Coord(x=0, y=1),
+        "coords": Coord(1, 0),
         "forbidden": Direction.UP
     },
     Direction.LEFT: {
-        "coords": Coord(x=-1, y=0),
+        "coords": Coord(0, -1),
         "forbidden": Direction.RIGHT
         },
     Direction.RIGHT: {
-        "coords": Coord(x=1, y=0),
+        "coords": Coord(0, 1),
         "forbidden": Direction.LEFT
     },
 }
