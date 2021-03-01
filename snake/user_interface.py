@@ -1,6 +1,4 @@
 import curses
-import sys
-import time
 from typing import TYPE_CHECKING, Any, Optional
 
 from snake import Window

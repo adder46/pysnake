@@ -77,7 +77,6 @@ class FakeStdscr:
 def fake_curses(monkeypatch):
     fc = FakeCurses()
     monkeypatch.setattr(application, "curses", fc)
-    monkeypatch.setattr(core, "curses", fc)
     monkeypatch.setattr(user_interface, "curses", fc)
     return fc
 

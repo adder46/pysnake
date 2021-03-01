@@ -1,8 +1,6 @@
 import collections
-import curses
 import enum
 import random
-import time
 from typing import (
     Any,
     Dict,
