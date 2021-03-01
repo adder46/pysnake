@@ -12,6 +12,7 @@ from snake.user_interface import (
     PLAYGROUND_WIDTH,
     UserInterface,
     create_screen,
+    make_color_pairs,
 )
 
 
@@ -30,6 +31,8 @@ def main(stdscr: Window) -> None:
     inner_screen = create_screen(stdscr)
     assert inner_screen is not None
 
+    make_color_pairs()
+
     stdscr.timeout(100)
     stdscr.keypad(True)
 
@@ -41,18 +44,19 @@ def main(stdscr: Window) -> None:
         inner_screen.erase()
         inner_screen.box(0, 0)
 
-        user_interface.renderer.render_snake(game.snake)
+        user_interface.render_snake(game.snake)
         game.handle_food()
-        user_interface.renderer.render_food(game.food)
-        user_interface.display_score(game.score)
+        user_interface.render_food(game.food)
+        user_interface.render_score(game.score)
 
         stdscr.refresh()
         inner_screen.refresh()
 
-        try:
-            game.snake.move()
-        except CollisionError:
-            user_interface.game_over_screen(game)
+        if not game.paused:
+            try:
+                game.snake.move()
+            except CollisionError:  # pragma: no cover
+                break
 
         try:
             user_input = stdscr.getch()
@@ -64,8 +68,8 @@ def main(stdscr: Window) -> None:
         if user_input in DIRECTIONS:
             game.set_direction(DIRECTIONS[user_input])
 
-        if user_input == ord("p"):
+        elif user_input == ord("p"):
             game.pause()
 
-        if user_input == ord("q"):
+        elif user_input == ord("q"):
             sys.exit()

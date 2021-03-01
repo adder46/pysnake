@@ -59,6 +59,7 @@ class Game:
         self.food = Food(screen, self.snake)
         self.food_counter: int = 0
         self.score: int = 0
+        self.paused: bool = False
 
     def make_food(self) -> None:
         """
@@ -101,18 +102,9 @@ class Game:
 
     def pause(self) -> None:
         """
-        Pauses the gameplay and waits for user input. If the input is key "p",
-        it quits waiting and goes back to main game loop.
+        Pauses/resumes the gameplay.
         """
-        while True:
-            try:
-                user_input = self.screen.getch()
-            except curses.error:
-                time.sleep(0.1)
-                continue
-            if ord("p") == user_input:
-                break
-
+        self.paused = not self.paused
 
 class Snake:
     def __init__(self, screen: Window):

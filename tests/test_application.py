@@ -33,11 +33,3 @@ def test_user_input(monkeypatch, fake_curses, fake_stdscr):
     monkeypatch.setattr(core.Game, "pause", fake_pause)
     with pytest.raises(SystemExit):
         application.main(fake_stdscr)
-
-
-def test_collision(monkeypatch, fake_curses, fake_stdscr):
-    monkeypatch.setattr(
-        user_interface.UserInterface, "game_over_screen", fake_game_over
-    )
-    with pytest.raises(core.CollisionError):
-        application.main(fake_stdscr)
